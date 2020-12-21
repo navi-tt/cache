@@ -1,10 +1,10 @@
 package freecache
 
 import (
-	"cache"
 	"encoding/json"
 	"fmt"
 	fc "github.com/coocood/freecache"
+	"github.com/navi-tt/cache"
 	"strings"
 )
 

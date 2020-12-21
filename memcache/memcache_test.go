@@ -1,9 +1,9 @@
 package memcache
 
 import (
-	"cache"
 	"fmt"
 	_ "github.com/bradfitz/gomemcache/memcache"
+	"github.com/navi-tt/cache"
 	"testing"
 )
 

@@ -1,8 +1,8 @@
 package redis
 
 import (
-	"cache"
 	"fmt"
+	"github.com/navi-tt/cache"
 	"testing"
 )
 

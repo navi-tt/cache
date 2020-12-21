@@ -1,11 +1,11 @@
 package redis
 
 import (
-	"cache"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/go-redis/redis"
+	"github.com/navi-tt/cache"
 	"math/rand"
 	"strings"
 	"time"

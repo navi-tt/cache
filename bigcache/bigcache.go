@@ -1,10 +1,10 @@
 package bigcache
 
 import (
-	"cache"
 	"encoding/json"
 	"errors"
 	"github.com/allegro/bigcache"
+	"github.com/navi-tt/cache"
 	"strings"
 	"time"
 )

@@ -1,10 +1,10 @@
 package memcache
 
 import (
-	"cache"
 	"encoding/json"
 	"errors"
 	"github.com/bradfitz/gomemcache/memcache"
+	"github.com/navi-tt/cache"
 	"strings"
 	"time"
 )

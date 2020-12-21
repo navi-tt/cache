@@ -1,8 +1,8 @@
 package freecache
 
 import (
-	"cache"
 	"fmt"
+	"github.com/navi-tt/cache"
 	"testing"
 )
 
