@@ -1,7 +1,6 @@
 package freecache
 
 import (
-	"encoding/json"
 	"fmt"
 	fc "github.com/coocood/freecache"
 	"github.com/navi-tt/cache"
@@ -21,16 +20,14 @@ func NewFreeCache() cache.Cache {
 	}
 }
 
-func (f *FreeCache) Init(conf string) error {
-	var cf map[string]int
-	json.Unmarshal([]byte(conf), &cf)
-	if _, ok := cf["size"]; !ok {
-		cf = make(map[string]int)
-		cf["size"] = defaultSize
+func (f *FreeCache) Init(conf interface{}) error {
+	freeCacheCfg, ok := conf.(cache.FreeCacheConf)
+	if !ok {
+		return cache.InvalidConfig
 	}
 
-	f.size = cf["size"]
-	f.cache = fc.NewCache(cf["size"])
+	f.size = freeCacheCfg.Size
+	f.cache = fc.NewCache(freeCacheCfg.Size)
 
 	return nil
 }

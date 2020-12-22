@@ -1,7 +1,6 @@
 package cache
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"sync"
@@ -95,15 +94,14 @@ func (bc *MemoryCache) IsExist(name string) bool {
 }
 
 // StartAndGC start memory cache. it will check expiration in every clock time.
-func (bc *MemoryCache) Init(config string) error {
-	var cf map[string]int
-	json.Unmarshal([]byte(config), &cf)
-	if _, ok := cf["interval"]; !ok {
-		cf = make(map[string]int)
-		cf["interval"] = DefaultEvery
+func (bc *MemoryCache) Init(config interface{}) error {
+	memoryCfg, ok := config.(MemoryConf)
+	if !ok {
+		return InvalidConfig
 	}
-	dur := time.Duration(cf["interval"]) * time.Second
-	bc.Every = cf["interval"]
+
+	dur := time.Duration(memoryCfg.Interval) * time.Second
+	bc.Every = memoryCfg.Interval
 	bc.dur = dur
 
 	return nil

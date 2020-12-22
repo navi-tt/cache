@@ -7,7 +7,7 @@ import (
 type Cache interface {
 
 	// cache initialize
-	Init(config string) error
+	Init(config interface{}) error
 
 	// get cached value by key.
 	Get(key string) (interface{}, error)
@@ -43,7 +43,7 @@ func Register(name string, adapter Instance) {
 // NewCache Create a new cache driver by adapter name and config string.
 // config need to be correct JSON as string: {"interval":360}.
 // it will start gc automatically.
-func NewCache(adapterName string, config string) (adapter Cache, err error) {
+func NewCache(adapterName string, config interface{}) (adapter Cache, err error) {
 	instanceFunc, ok := adapters[adapterName]
 	if !ok {
 		err = fmt.Errorf("cache: unknown adapter name %q (forgot to import?)", adapterName)

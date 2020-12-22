@@ -9,7 +9,7 @@ import (
 var c cache.Cache
 
 func TestMain(m *testing.M) {
-	ca, err := cache.NewCache(cache.FREE_CACHE, `{"size":100}`)
+	ca, err := cache.NewCache(cache.FREE_CACHE, cache.FreeCacheConf{Size: 100})
 	if err != nil {
 		fmt.Println(err.Error())
 		return

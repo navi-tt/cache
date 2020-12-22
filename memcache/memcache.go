@@ -1,11 +1,9 @@
 package memcache
 
 import (
-	"encoding/json"
 	"errors"
 	"github.com/bradfitz/gomemcache/memcache"
 	"github.com/navi-tt/cache"
-	"strings"
 	"time"
 )
 
@@ -59,13 +57,13 @@ func (m *MemCache) IsExist(key string) bool {
 }
 
 // start memcache adapter.
-func (m *MemCache) Init(config string) error {
-	var cf map[string]string
-	json.Unmarshal([]byte(config), &cf)
-	if _, ok := cf["addr"]; !ok {
-		return invalidAddress
+func (m *MemCache) Init(config interface{}) error {
+	memCacheCfg, ok := config.(cache.MemCacheConf)
+	if !ok {
+		return cache.InvalidConfig
 	}
-	m.conninfo = strings.Split(cf["addr"], "-")
+
+	m.conninfo = memCacheCfg.Addr
 	if m.conn == nil {
 		m.conn = memcache.New(m.conninfo...)
 	}

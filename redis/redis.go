@@ -1,7 +1,6 @@
 package redis
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/go-redis/redis"
@@ -39,53 +38,14 @@ func NewRedisCache() cache.Cache {
 	return &RedisCache{}
 }
 
-func (r *RedisCache) Init(conf string) error {
-	if conf == "" {
+func (r *RedisCache) Init(conf interface{}) error {
+	redisCfg, ok := conf.(cache.RedisConf)
+	if !ok {
 		return cache.InvalidConfig
 	}
 
-	var cf map[string]interface{}
-	json.Unmarshal([]byte(conf), &cf)
-
-	r.Master = cf["master"].(string)
-	if val, ok := cf["master"].(string); !ok {
-		r.Master = ""
-	} else {
-		r.Master = val
-	}
-
-	if val, ok := cf["addr"].(string); !ok {
-		return invalidAddress
-	} else {
-		addr := strings.Split(val, "-")
-		r.Addr = addr
-	}
-
-	if val, ok := cf["password"].(string); !ok {
-		r.Password = ""
-	} else {
-		r.Password = val
-	}
-
-	if val, ok := cf["db"].(int); !ok {
-		r.DB = 0
-	} else {
-		r.DB = val
-	}
-
-	if val, ok := cf["master"].(int); !ok {
-		r.MaxRetries = 0
-	} else {
-		if val >= 3 {
-			val = 3
-		}
-		r.MaxRetries = val
-	}
-
-	if val, ok := cf["maxRetryBackoff"].(int); !ok {
-		r.MaxRetryBackoff = 0
-	} else {
-		r.MaxRetryBackoff = val
+	if redisCfg.MaxRetries >= 3 {
+		redisCfg.MaxRetries = 3
 	}
 
 	if r.Master != "" {

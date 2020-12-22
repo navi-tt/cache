@@ -1,12 +1,10 @@
 package bigcache
 
 import (
-	"encoding/json"
 	"errors"
 	"github.com/allegro/bigcache"
 	"github.com/navi-tt/cache"
 	"strings"
-	"time"
 )
 
 var (
@@ -62,17 +60,19 @@ func (b *BigCache) IsExist(key string) bool {
 }
 
 // start bigcache adapter.
-func (b *BigCache) Init(config string) error {
-	var cf map[string]string
-	json.Unmarshal([]byte(config), &cf)
+func (b *BigCache) Init(conf interface{}) error {
+	bigCacheCfg, ok := conf.(cache.BigConf)
+	if !ok {
+		return cache.InvalidConfig
+	}
 
 	cfg := bigcache.Config{
-		Shards:             1024,
-		LifeWindow:         10 * time.Minute, //超时时间
-		CleanWindow:        5 * time.Minute,
-		MaxEntriesInWindow: 1000 * 10 * 60,
-		MaxEntrySize:       500,
-		Verbose:            true,
+		Shards:             bigCacheCfg.Shards,
+		LifeWindow:         bigCacheCfg.LifeWindow, //超时时间
+		CleanWindow:        bigCacheCfg.CleanWindow,
+		MaxEntriesInWindow: bigCacheCfg.MaxEntriesInWindow,
+		MaxEntrySize:       bigCacheCfg.MaxEntrySize,
+		Verbose:            bigCacheCfg.Verbose,
 		HardMaxCacheSize:   8192,
 		OnRemove:           nil,
 		OnRemoveWithReason: nil,
