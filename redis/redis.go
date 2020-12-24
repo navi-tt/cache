@@ -6,7 +6,6 @@ import (
 	"github.com/go-redis/redis"
 	"github.com/navi-tt/cache"
 	"math/rand"
-	"strings"
 	"time"
 )
 
@@ -92,7 +91,7 @@ func (r *RedisCache) Init(conf interface{}) error {
 func (r *RedisCache) Get(key string) (interface{}, error) {
 	fmt.Printf("[freecache Get key:{%s}]\n", key)
 
-	if strings.EqualFold(key, "") {
+	if len(key) == 0 {
 		return nil, cache.InvalidKey
 	}
 
@@ -112,7 +111,7 @@ func (r *RedisCache) Get(key string) (interface{}, error) {
 func (r *RedisCache) Set(key string, val interface{}, expireTime int) error {
 	fmt.Printf("[freecache set key:{%s} value:{%v} timeout:{%d}]\n", key, val, expireTime)
 
-	if strings.EqualFold(key, "") {
+	if len(key) == 0 {
 		return cache.InvalidKey
 	}
 
@@ -127,7 +126,7 @@ func (r *RedisCache) Set(key string, val interface{}, expireTime int) error {
 func (r *RedisCache) Delete(key string) error {
 	fmt.Printf("[freecache del key:{%s}]\n", key)
 
-	if strings.EqualFold(key, "") {
+	if len(key) == 0 {
 		return cache.InvalidKey
 	}
 

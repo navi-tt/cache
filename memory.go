@@ -77,9 +77,6 @@ func (bc *MemoryCache) Delete(name string) error {
 		return errors.New("key not exist")
 	}
 	delete(bc.items, name)
-	if _, ok := bc.items[name]; ok {
-		return errors.New("delete key error")
-	}
 	return nil
 }
 

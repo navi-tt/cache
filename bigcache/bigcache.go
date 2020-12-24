@@ -4,7 +4,6 @@ import (
 	"errors"
 	"github.com/allegro/bigcache"
 	"github.com/navi-tt/cache"
-	"strings"
 )
 
 var (
@@ -50,7 +49,7 @@ func (b *BigCache) Delete(key string) error {
 func (b *BigCache) IsExist(key string) bool {
 	_, err := b.cache.Get(key)
 	if err != nil {
-		if strings.EqualFold(err.Error(), "Entry not found") {
+		if err == cache.EntryNotFound {
 			return false
 		}
 		return false

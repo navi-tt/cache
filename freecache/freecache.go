@@ -4,7 +4,6 @@ import (
 	"fmt"
 	fc "github.com/coocood/freecache"
 	"github.com/navi-tt/cache"
-	"strings"
 )
 
 var defaultSize = 0
@@ -35,7 +34,7 @@ func (f *FreeCache) Init(conf interface{}) error {
 func (f *FreeCache) Get(key string) (interface{}, error) {
 	fmt.Printf("[freecache Get key:{%s}]\n", key)
 
-	if strings.EqualFold(key, "") {
+	if len(key) == 0 {
 		return nil, cache.InvalidKey
 	}
 
@@ -50,7 +49,7 @@ func (f *FreeCache) Get(key string) (interface{}, error) {
 func (f *FreeCache) Set(key string, val interface{}, expireTime int) error {
 	fmt.Printf("[freecache set key:{%s} value:{%v} timeout:{%d}]\n", key, val, expireTime)
 
-	if strings.EqualFold(key, "") {
+	if len(key) == 0 {
 		return cache.InvalidKey
 	}
 
@@ -72,7 +71,7 @@ func (f *FreeCache) Set(key string, val interface{}, expireTime int) error {
 func (f *FreeCache) Delete(key string) error {
 	fmt.Printf("[freecache del key:{%s}]\n", key)
 
-	if strings.EqualFold(key, "") {
+	if len(key) == 0 {
 		return cache.InvalidKey
 	}
 
@@ -87,7 +86,7 @@ func (f *FreeCache) Delete(key string) error {
 func (f *FreeCache) IsExist(key string) bool {
 	_, err := f.Get(key)
 	if err != nil {
-		if strings.EqualFold(err.Error(), "Entry not found") {
+		if err == cache.EntryNotFound {
 			return false
 		} else {
 			return false
